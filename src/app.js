@@ -43,28 +43,20 @@ app.get("/tweets", (req, res) => {
         page = 1;
     }
     const ultimos = []; 
-    const enviar = [];
     if (page < 1){
         return res.status(400).send("Informe uma página válida!");
     }
-    for (let i = 0; i<tweetsArray.length; i++){
-        if (ultimos.length < 10*page){
+    for (let i=(page-1)*10; i < tweetsArray.length; i++){
+        if (ultimos.length < 10){
             ultimos.push(tweetsArray[i]);
-        } else{
-            break;
-        }
-    }
-    for (let i=(page-1)*10; i < ultimos.length; i++){
-        if (enviar.length < 10){
-            enviar.push(tweetsArray[i]);
         } else{
             break;
         }
     }
     console.log('agora');
     console.log(page);
-    console.log(enviar);
-    res.send(enviar);
+    console.log(ultimos);
+    res.send(ultimos);
 });
 
 app.get("/tweets/:username", (req, res) => {
@@ -77,5 +69,5 @@ app.get("/tweets/:username", (req, res) => {
     res.send(tweetsUser);
 })
 
-const porta = 5000;
+const porta = 5005;
 app.listen(porta, () => console.log(`Rodando em http://localhost:${porta}`));
