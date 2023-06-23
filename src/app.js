@@ -10,15 +10,12 @@ const tweetsArray = [];
 
 app.post('/sign-up', (req, res) => {
     const {username, avatar} = req.body;
-
     if (!username || !avatar || !(typeof username == "string") || !(typeof avatar == "string")){
         return res.status(400).send("Todos os campos são obrigatórios!");
     }
-
     const novoUser = {username, avatar};
     usersArray.push(novoUser);
     res.status(201).send("OK");
-    console.log(usersArray);
 });
 
 app.post("/tweets", (req, res) => {
@@ -34,15 +31,14 @@ app.post("/tweets", (req, res) => {
     const novoTweet = {username, avatar: autorizacao.avatar, tweet};
     tweetsArray.unshift(novoTweet);
     res.status(201).send("OK");
-    console.log(tweetsArray);
 });
 
 app.get("/tweets", (req, res) => {
     let  { page } = req.query; 
+    const ultimos = []; 
     if (page == undefined){
         page = 1;
     }
-    const ultimos = []; 
     if (page < 1){
         return res.status(400).send("Informe uma página válida!");
     }
@@ -53,9 +49,6 @@ app.get("/tweets", (req, res) => {
             break;
         }
     }
-    console.log('agora');
-    console.log(page);
-    console.log(ultimos);
     res.send(ultimos);
 });
 
@@ -69,5 +62,5 @@ app.get("/tweets/:username", (req, res) => {
     res.send(tweetsUser);
 })
 
-const porta = 5005;
+const porta = 5000;
 app.listen(porta, () => console.log(`Rodando em http://localhost:${porta}`));
