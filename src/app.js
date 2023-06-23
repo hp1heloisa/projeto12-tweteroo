@@ -38,7 +38,10 @@ app.post("/tweets", (req, res) => {
 });
 
 app.get("/tweets", (req, res) => {
-    const { page } = req.query; 
+    let  { page } = req.query; 
+    if (page == undefined){
+        page = 1;
+    }
     const ultimos = []; 
     const enviar = [];
     if (page < 1){
@@ -59,6 +62,7 @@ app.get("/tweets", (req, res) => {
         }
     }
     console.log('agora');
+    console.log(page);
     console.log(enviar);
     res.send(enviar);
 });
