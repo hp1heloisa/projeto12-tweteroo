@@ -41,7 +41,6 @@ app.get("/tweets", (req, res) => {
     const { page } = req.query; 
     const ultimos = []; 
     const enviar = [];
-    console.log(ultimos);
     if (page < 1){
         return res.status(400).send("Informe uma página válida!");
     }
@@ -59,6 +58,8 @@ app.get("/tweets", (req, res) => {
             break;
         }
     }
+    console.log('agora');
+    console.log(enviar);
     res.send(enviar);
 });
 
