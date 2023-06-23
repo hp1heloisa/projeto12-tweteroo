@@ -32,21 +32,34 @@ app.post("/tweets", (req, res) => {
         return res.status(400).send("Todos os campos são obrigatórios!");
     }
     const novoTweet = {username, avatar: autorizacao.avatar, tweet};
-    tweetsArray.push(novoTweet);
+    tweetsArray.unshift(novoTweet);
     res.status(201).send("OK");
     console.log(tweetsArray);
 });
 
 app.get("/tweets", (req, res) => {
+    const { page } = req.query; 
     const ultimos = []; 
-    for (let i = tweetsArray.length-1; i>=0; i--){
-        if (ultimos.length < 10){
+    const enviar = [];
+    console.log(ultimos);
+    if (page < 1){
+        return res.status(400).send("Informe uma página válida!");
+    }
+    for (let i = 0; i<tweetsArray.length; i++){
+        if (ultimos.length < 10*page){
             ultimos.push(tweetsArray[i]);
         } else{
             break;
         }
     }
-    res.send(ultimos);
+    for (let i=(page-1)*10; i < ultimos.length; i++){
+        if (enviar.length < 10){
+            enviar.push(tweetsArray[i]);
+        } else{
+            break;
+        }
+    }
+    res.send(enviar);
 });
 
 app.get("/tweets/:username", (req, res) => {
