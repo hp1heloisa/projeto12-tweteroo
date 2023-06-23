@@ -40,5 +40,5 @@ app.get("/tweets", (req, res) => {
     res.send(ultimos);
 });
 
-const porta = 5005
+const porta = 5000;
 app.listen(porta, () => console.log(`Rodando em http://localhost:${porta}`));
