@@ -10,21 +10,30 @@ const tweetsArray = [];
 
 app.post('/sign-up', (req, res) => {
     const {username, avatar} = req.body;
+
+    if (!username || !avatar || !(typeof username == "string") || !(typeof avatar == "string")){
+        return res.status(400).send("Todos os campos são obrigatórios!");
+    }
+
     const novoUser = {username, avatar};
     usersArray.push(novoUser);
-    res.send("OK");
+    res.status(201).send("OK");
     console.log(usersArray);
 });
 
 app.post("/tweets", (req, res) => {
-    const {username, tweet} = req.body;
+    const {tweet} = req.body;
+    const username = req.headers.user;
     const autorizacao = usersArray.find(user => user.username == username);
     if (!autorizacao){
-        return res.send("UNAUTHORIZED");
+        return res.status(401).send("UNAUTHORIZED");
     }; 
+    if (!username || !tweet || !(typeof username == "string") || !(typeof tweet == "string")){
+        return res.status(400).send("Todos os campos são obrigatórios!");
+    }
     const novoTweet = {username, avatar: autorizacao.avatar, tweet};
     tweetsArray.push(novoTweet);
-    res.send("OK");
+    res.status(201).send("OK");
     console.log(tweetsArray);
 });
 
@@ -39,6 +48,16 @@ app.get("/tweets", (req, res) => {
     }
     res.send(ultimos);
 });
+
+app.get("/tweets/:username", (req, res) => {
+    const {username} = req.params;
+    const tweetsUser = tweetsArray.filter(tweet => {
+        if (tweet.username == username){
+            return true;
+        }
+    });
+    res.send(tweetsUser);
+})
 
 const porta = 5000;
 app.listen(porta, () => console.log(`Rodando em http://localhost:${porta}`));
